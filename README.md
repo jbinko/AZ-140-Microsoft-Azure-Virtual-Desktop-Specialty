@@ -16,6 +16,14 @@ Candidates for this certification should have experience in Azure technologies, 
 
 - Instructor-led (Paid) <https://docs.microsoft.com/en-us/learn/certifications/azure-virtual-desktop-specialty/?tab=tab-instructor-led>
 
+- Another Study Guide #1 - <https://ravikirans.com/az-140-azure-exam-study-guide/>
+
+- Another Study Guide #2 - <https://charbelnemnom.com/az-140-exam-study-guide-configuring-and-operating-windows-virtual-desktop-on-microsoft-azure/>
+
+- Another Study Guide #3 - <https://www.thomasmaurer.ch/2021/02/az-140-study-guide-windows-virtual-desktop-on-microsoft-azure/>
+
+- Another Study Guide #4 (Video series) - <https://youtu.be/DZNc1DQxEEA>
+
 ## Skills measured and links
 
 ### Plan an Azure Virtual Desktop Architecture (10-15%)
@@ -23,11 +31,51 @@ Candidates for this certification should have experience in Azure technologies, 
 #### Design the Azure Virtual Desktop architecture
 
 - assess existing physical and virtual desktop environments
-- assess network capacity and speed requirements for Azure Virtual Desktop
-- recommend an operating system for an Azure Virtual Desktop implementation 
-- plan and configure name resolution for Active Directory (AD) and Azure Active Directory 
+  - Azure Virtual Desktop assessment - <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/wvd/migrate-assess>
+    - Use Movere as your data collection tool to have the data you need to develop personas and answer these questions by using data in Azure Migrate
+    - Lakeside Software, is integrated with Azure Migrate within the virtual desktop infrastructure migration goals section. The vendor can help you map out a plan for Azure Virtual Desktop deployment, including personas, host pools, applications, and user profiles.
+    - Use User personas - distinct personas will be required to support all of the users in migration scenario Defining personas will come as a result of bucketing users based on the following criteria: Personal pools, Density, Performance, GPU, Region, Business unit, User Count, Sessions count
+    - Both Movere and Lakeside scans of the current on-premises environment can provide data about the applications that are run on end-user desktops. By using that data, you can create a list of all applications required per each persona.
+    - Do any applications need to be installed for the persona to use this desktop? Unless the persona uses 100 percent web-based software as a service applications, you'll likely need to configure a custom master VHD image for each persona, with the required applications installed on the master image.
+    - Does this persona need Microsoft 365 applications? If so, you'll need to select an image from the gallery that has Microsoft 365 apps included or add Microsoft 365 to a customized master VHD image.
+    - Is this application compatible with Windows 10 Enterprise multi-session? If an application isn't compatible, a personal pool might be required to run the custom VHD image. For assistance with application and Azure Virtual Desktop compatibility issues, see the desktop application assure service.
+    - Are mission-critical applications likely to suffer from latency between the Azure Virtual Desktop instance and any back-end systems? If so, you might want to consider migrating the back-end systems that support the application to Azure.
+  - Virtual machine sizing guidelines - <https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/virtual-machine-recs>
+    - Multi-session - All VMs should have more than two cores, VMs should not have more than 32 cores. Recommended VM size is between 4 vCPUs and 24 vCPUs. We don't recommend using 2 cores or 32 or more cores for standard and larger environments.
+    - Single-session- at least two physical CPU cores per VM (typically four vCPUs with hyperthreading).
+    - use Premium SSD storage in your OS disk for production workloads
+    - B-series burstable VMs are a good choice for users who don't always need maximum CPU performance.
 
-#### Domain Services (Azure AD DS)
+- assess network capacity and speed requirements for Azure Virtual Desktop
+  - Network guidelines - <https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/network-guidance>
+  - Workload type - Recommended bandwidth: Light 1.5 Mbps, Medium 3 Mbps, Heavy 5 Mbps, Power 15 Mbps
+  - Workload type - Recommended bandwidth: About 1024 × 768 px 1.5 Mbps, About 1280 × 720 px 3 Mbps, About 1920 × 1080 px 5 Mbps, About 3840 × 2160 px (4K) 15 Mbps
+  - Check out the Azure Virtual Desktop experience estimator, latency up to 150 ms shouldn’t impact user experience that doesn't involve rendering or video. Latencies between 150 ms and 200 ms should be fine for text processing. Latency above 200 ms may impact user experience.
+    - use the tool every two to three months to make sure the optimal location hasn't changed as Azure Virtual Desktop rolls out to new areas. - <https://docs.microsoft.com/en-us/azure/virtual-desktop/connection-latency>
+  - Remote Desktop Protocol (RDP) bandwidth requirements - <https://docs.microsoft.com/en-us/azure/virtual-desktop/rdp-bandwidth>
+    - The best way to understand bandwidth requirements is to monitor real user connections. Monitoring can be performed by the built-in performance counters or by the network equipment.
+    - there's no need to limit bandwidth utilization as limiting may affect user experience. Yet in the constrained networks you may want to limit network utilization. You can use policy-based Quality of Service (QoS) within Group Policy to set the predefined throttle rate.
+  - Understanding Azure Virtual Desktop network connectivity - <https://docs.microsoft.com/en-us/azure/virtual-desktop/network-connectivity>
+    - Reverse connect transport - it is using outbound connectivity to the Azure Virtual Desktop infrastructure over the HTTPS connection. On start of a session host, the Agent Loader service opens TLS 1.2 AVD broker's persistent communication channel between session host and Azure Virtual Desktop infrastructure.
+  - Quality of Service (QoS) for Azure Virtual Desktop - <https://docs.microsoft.com/en-us/azure/virtual-desktop/rdp-quality-of-service-qos>
+    - RDP Shortpath - allows real-time RDP traffic that's sensitive to network delays to "cut in line" in front of traffic that's less sensitive.
+    If you support a large group of users experiencing any of the problems (Jitter , Packet loss, Delayed round-trip time), you probably need to implement QoS. To address quality issues, we recommend that you first use QoS, then add bandwidth only where necessary. For QoS to be effective, you must apply consistent QoS settings throughout your organization. Any part of the path that fails to support your QoS priorities can degrade the quality RDP session.
+
+- recommend an operating system for an Azure Virtual Desktop implementation
+  - Supported virtual machine OS images - <https://docs.microsoft.com/en-us/azure/virtual-desktop/overview#supported-virtual-machine-os-images>
+  - x64 operating system images:
+    - Windows 10 Enterprise multi-session
+    - Windows 10 Enterprise
+    - Windows 7 Enterprise
+    - Windows Server 2019
+    - Windows Server 2016
+    - Windows Server 2012 R2
+
+- plan and configure name resolution for Active Directory (AD) and Azure Active Directory Domain Services (Azure AD DS)
+  - Configure Active Directory, Azure AD DNS - <https://www.youtube.com/watch?v=kfOYWFpoglQ>
+  - Understand, AD Name Resolution, DNS, Configure Azure DNS, Azure AD Domain Services, DNS Conditional Forwarders, AVD DNS Email Discovery
+  - Multiple forests with AD DS and Azure AD - <https://docs.microsoft.com/en-us/azure/architecture/example-scenario/wvd/multi-forest>
+  - Multiple forests with AD DS, Azure AD, and Azure AD DS - <https://docs.microsoft.com/en-us/azure/architecture/example-scenario/wvd/multi-forest-azure-managed>
 
 - plan a host pools architecture
 - recommend resource groups, subscriptions, and management groups

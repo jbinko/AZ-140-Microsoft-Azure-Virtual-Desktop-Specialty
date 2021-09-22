@@ -24,6 +24,8 @@ Candidates for this certification should have experience in Azure technologies, 
 
 - Another Study Guide #4 (Video series) - <https://youtu.be/DZNc1DQxEEA>
 
+- Questions Examples - <https://www.itexams.com/exam/AZ-140>
+
 ## Skills measured and links
 
 ### Plan an Azure Virtual Desktop Architecture (10-15%)
@@ -45,12 +47,14 @@ Candidates for this certification should have experience in Azure technologies, 
     - Single-session- at least two physical CPU cores per VM (typically four vCPUs with hyperthreading).
     - use Premium SSD storage in your OS disk for production workloads
     - B-series burstable VMs are a good choice for users who don't always need maximum CPU performance.
+    - Cloud cache should use SSD disks
 
 - assess network capacity and speed requirements for Azure Virtual Desktop
-  - Network guidelines - <https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/network-guidance>
-  - Workload type - Recommended bandwidth: Light 1.5 Mbps, Medium 3 Mbps, Heavy 5 Mbps, Power 15 Mbps
-  - Workload type - Recommended bandwidth: About 1024 × 768 px 1.5 Mbps, About 1280 × 720 px 3 Mbps, About 1920 × 1080 px 5 Mbps, About 3840 × 2160 px (4K) 15 Mbps
-  - Check out the Azure Virtual Desktop experience estimator, latency up to 150 ms shouldn’t impact user experience that doesn't involve rendering or video. Latencies between 150 ms and 200 ms should be fine for text processing. Latency above 200 ms may impact user experience.
+  - AZ-140 ep05 | AVD Network Planning - <https://youtu.be/O3AaPTWzpi4>
+    - Network guidelines - <https://docs.microsoft.com/en-us/windows-server/remote/remote-desktop-services/network-guidance>
+    - Workload type - Recommended bandwidth: Light 1.5 Mbps, Medium 3 Mbps, Heavy 5 Mbps, Power 15 Mbps
+    - Workload type - Recommended bandwidth: About 1024 × 768 px 1.5 Mbps, About 1280 × 720 px 3 Mbps, About 1920 × 1080 px 5 Mbps, About 3840 × 2160 px (4K) 15 Mbps
+    - Check out the Azure Virtual Desktop experience estimator, latency up to 150 ms shouldn’t impact user experience that doesn't involve rendering or video. Latencies between 150 ms and 200 ms should be fine for text processing. Latency above 200 ms may impact user experience.
     - use the tool every two to three months to make sure the optimal location hasn't changed as Azure Virtual Desktop rolls out to new areas. - <https://docs.microsoft.com/en-us/azure/virtual-desktop/connection-latency>
   - Remote Desktop Protocol (RDP) bandwidth requirements - <https://docs.microsoft.com/en-us/azure/virtual-desktop/rdp-bandwidth>
     - The best way to understand bandwidth requirements is to monitor real user connections. Monitoring can be performed by the built-in performance counters or by the network equipment.
@@ -58,7 +62,7 @@ Candidates for this certification should have experience in Azure technologies, 
   - Understanding Azure Virtual Desktop network connectivity - <https://docs.microsoft.com/en-us/azure/virtual-desktop/network-connectivity>
     - Reverse connect transport - it is using outbound connectivity to the Azure Virtual Desktop infrastructure over the HTTPS connection. On start of a session host, the Agent Loader service opens TLS 1.2 AVD broker's persistent communication channel between session host and Azure Virtual Desktop infrastructure.
   - Quality of Service (QoS) for Azure Virtual Desktop - <https://docs.microsoft.com/en-us/azure/virtual-desktop/rdp-quality-of-service-qos>
-    - RDP Shortpath - allows real-time RDP traffic that's sensitive to network delays to "cut in line" in front of traffic that's less sensitive.
+    - RDP Shortpath - allows real-time RDP traffic that's sensitive to network delays to "cut in line" in front of traffic that's less sensitive. If the client is in perimeter it can connect directly (after broker/gateway) via ER/VPN to VM over fast UDP.
     If you support a large group of users experiencing any of the problems (Jitter , Packet loss, Delayed round-trip time), you probably need to implement QoS. To address quality issues, we recommend that you first use QoS, then add bandwidth only where necessary. For QoS to be effective, you must apply consistent QoS settings throughout your organization. Any part of the path that fails to support your QoS priorities can degrade the quality RDP session.
 
 - recommend an operating system for an Azure Virtual Desktop implementation
@@ -70,27 +74,109 @@ Candidates for this certification should have experience in Azure technologies, 
     - Windows Server 2019
     - Windows Server 2016
     - Windows Server 2012 R2
+  - Windows Servers deployments requires also CAL with SA
+  - Windows 7 doesn't support FSLogix
+  - Multisession image can be used only in Azure - License constraint
 
 - plan and configure name resolution for Active Directory (AD) and Azure Active Directory Domain Services (Azure AD DS)
   - Configure Active Directory, Azure AD DNS - <https://www.youtube.com/watch?v=kfOYWFpoglQ>
-  - Understand, AD Name Resolution, DNS, Configure Azure DNS, Azure AD Domain Services, DNS Conditional Forwarders, AVD DNS Email Discovery
+  - Understand, AD Name Resolution, DNS, Configure Azure DNS, Azure AD Domain Services, DNS Conditional Forwarders, AVD DNS Email Discovery, private link names resolution
   - Multiple forests with AD DS and Azure AD - <https://docs.microsoft.com/en-us/azure/architecture/example-scenario/wvd/multi-forest>
   - Multiple forests with AD DS, Azure AD, and Azure AD DS - <https://docs.microsoft.com/en-us/azure/architecture/example-scenario/wvd/multi-forest-azure-managed>
 
 - plan a host pools architecture
+  - AZ-140 ep03 - <https://youtu.be/FLbcayyodqk>
+  - Naming conventions, tagging strategy, region, validation pools (AVD Updates, testing on users), type of host pool (personal, pooled, remote app), breadth first vs depth first LB, automatic/direct assignment for personal, RDP Properties, VM size, Monitoring, AVD Roles Contributor and Reader on host pool level, BCDR
+
 - recommend resource groups, subscriptions, and management groups
+  - AZ-140 ep01 - <https://youtu.be/EG_Zqdm7OQ0>
+  - Understand waterfall hierarchy - management groups, subscriptions, resource groups, resources
+  - Resource quotas and limits, API calls throttling limits, cost management, regions
+
+
+
+
 - configure a location for the Azure Virtual Desktop metadata
+  - Data locations for Azure Virtual Desktop - <https://docs.microsoft.com/en-us/azure/virtual-desktop/data-locations>
+  - WVD Service Metadata are: Workspace Names, Host Pool Names, Application Group Names, User Principal Names (UPN)
+  - WVD Service Metadata locations are not available globally. The customer controls the selection of the WVD service metadata service region.
+  - On the host pool level: The regions you selected is where the metadata for this host pool and its related objects will be stored. Make sure you choose the regions inside the geography you want the service metadata to be stored in.
+
+
+
+
 - calculate and recommend a configuration for performance requirements
 - calculate and recommend a configuration for Azure Virtual Machine capacity requirements
+  - AZ-140 ep04 | Plan Your AVD Session Hosts - <https://youtu.be/HNCZ2pzr9mo>
+  - When Availability Set is used it can support only 200 VMs withouth it can support 400 VMs. AS doesn't help with personal VM. For pooled it makes perfect sense but limit is 200 VMs per AS.
+  - Azure subscription can have quota limits on SKU and region, you might need to create support ticket to increase quota
 
 #### Design for user identities and profiles
 
 - select an appropriate licensing model for Azure Virtual Desktop based on requirements
+  - Customers are eligible to access Windows 10 single and multi-session and Windows 7 with Windows Virtual Desktop (WVD) if they have one of the following licenses:
+    - Microsoft 365 E3/E5
+    - Microsoft 365 A3/A5/Student Use Benefits
+    - Microsoft 365 F1
+    - Microsoft 365 Business
+    - Windows 10 Enterprise E3/E5
+    - Windows 10 Education A3/A5
+    - Windows 10 VDA per user
+  - Customers are eligible to access Server workloads with Windows Virtual Desktop (WVD) if they have one of the following licenses: RDS CAL license with active Software Assurance (SA)
+
 - recommend an appropriate storage solution (including Azure NetApp Files versus Azure Files)
+  - AZ-140 ep07 - <https://youtu.be/tXVxuDbbNi4>
+  - FSLogix has four components (user profiles, office profiles, application masking, java version control)
+  - You need to understand, How much storage you need for profiles (Ideally get average number from existing environment).
+  - You can use simple math AVG profile size * number of users
+  - Make sure Profiles are stored as VHDx files and make sure they use Dynamic disks settings
+  - Align profile share with host pools (one share per host pool)
+  - User logon requires 50IOPs per user and later after user is on average is 10IOPs per users. How many users might be logging on simultaneously?
+  - You can use Azure Files, Azure NetApp Files, Storage Spaces Direct (self service 2+ VMs, NOT recommended).
+    Keep region aligned. - <https://docs.microsoft.com/en-us/azure/virtual-desktop/store-fslogix-profile>
+    - Do NOT use Azure NetApp Files for AVD only and if you have less than 7000 users. Snapshots and DR/Replication is available.
+    - Think about large file share for Azure Files on standard tier 10K IOPs. Snapshots and Backup is available. Limited DR options.
+
+
+
 - plan for Azure Virtual Desktop client deployment
+  - AZ-140 ep10 - <https://youtu.be/-ce3mqwvyBI>
+  - Multi-monitor or integrated apps (RAIL) is only on Windows client / MacOS client
+  - Teams optimizations is only on Windows Desktop Clients
+  - SSO with ADFS is Windows Desktop Clients only and HTML5 Only
+
 - plan for user profiles
+  - AZ-140 ep08 - <https://youtu.be/tFyLeg1f8BQ>
+    - Profiles are designed to roam from one VM to another (attached virtual drive to session host) and are stored on SMB file share
+    - In AVD you DO NOT need preserve/backup office profiles (it is cached data), you do not have to maintain/shrink.
+    - You should separate User profiles and office profiles. Different DR/Backup, share strategy
+    - Shrink user profiles - <https://github.com/FSLogix/Invoke-FslShrinkDisk>
+    - Consider office profiles exclusions. E.g. Teams has 5GB storage which can be excluded.
+
+    - Attaching via VHD locations from file shares (can be multiple shares/regions), another option is Cloud Cache
+    - Cloud cache (lives in hidden space on C drive with writes locally and later replicates to file share/can be multiple)
+    - Cloud cache can be preferred but takes longer for user to logon (couple of seconds) and consider C drive performance (specifically with pooled environments). Do NOT use additional disks
+  - Three types of host pools
+    - Pooled Desktop Host pools - typically requires FSLogix unless kind of jump box use case
+    - Remote Apps pools - Usage of FSLogix depends.if applications needs to be personalized
+    - Personal Host pools - do NOT need FSLogix
+  - Do antivirus exclusions for FSLogix profiles during logon time - <https://docs.microsoft.com/en-us/azure/architecture/example-scenario/wvd/windows-virtual-desktop-fslogix#antivirus-exclusions>
+  - On FSLogix level, set "Delete Local Profile When VHD Should Apply" for new environments only
+  - "Size In MBs" (works only for new Disks) 30000 MBs good upper limit with dynamic disks
+  - Volume Types - prefer VHDx (newer format + more capabilities) over VHD
+  - Flip/Flop Profile Directory Name (user name first in file on network share)
+  - Do not use concurrent connections for profiles (use one file share with one host pool)
+
+
+
+
+
 - recommend a solution for network connectivity
 - plan for Azure AD Connect for user identities
+  - AZ-140 ep09 - <https://youtu.be/9kO68Euy--g>
+  - AD + AD Connect -> AAD or AAD -> Azure AD DS is required
+  - For AD users/groups are part of AD; For AAD DS users/groups are part of AAD
+    Where you created objects initially - this is where you have to manage them
 
 ### Implement an Azure Virtual Desktop Infrastructure (25-30%)
 
@@ -101,6 +187,11 @@ Candidates for this certification should have experience in Azure technologies, 
 - implement and manage network security
 - manage Azure Virtual Desktop session hosts by using Azure Bastion
 - monitor and troubleshoot network connectivity
+
+- AZ-140 ep12 - <https://youtu.be/kjqFUN78lso>
+  - On VNET in DNS set Custom DNS1, Custom DNS2 and fallback to Azure DNS
+  - Hub VNET to four subnets (GW, Firewall, Bastion + NSG, AD + NSG)
+  - NSG Rules List - <https://docs.microsoft.com/en-us/azure/virtual-desktop/safe-url-list#virtual-machines>
 
 #### Implement and manage storage for Azure Virtual Desktop
 
@@ -164,6 +255,9 @@ Candidates for this certification should have experience in Azure technologies, 
 - configure user settings through group policies and Endpoint Manager policies
 - configure persistent and non-persistent desktop environments
 - configure Remote Desktop Protocol (RDP) properties on a host pool
+  - Customize Remote Desktop Protocol (RDP) properties for a host pool - <https://docs.microsoft.com/en-us/azure/virtual-desktop/customize-rdp-properties>
+  You can customize using the Azure portal or by using the -CustomRdpProperty parameter in the Update-AzWvdHostPool cmdlet. Properties like: Multi-monitor mode, Drive redirections (Drives, clipboard, printers, COM ports, smart cards, devices, and usbdevicestore), Remote audio mode, VideoPlayback, EnableCredssp
+  You can have also custom RDP properties.
 - configure session timeout properties
 - troubleshoot user profile issues
 - troubleshoot Azure Virtual Desktop clients
@@ -184,17 +278,42 @@ Candidates for this certification should have experience in Azure technologies, 
 #### Plan and implement business continuity and disaster recovery
 
 - plan and implement a disaster recovery plan for Azure Virtual Desktop
+  - This is GREAT summary (must read) - <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/wvd/eslz-business-continuity-and-disaster-recovery#design-recommendations>
+  - Business continuity and disaster recovery (BCDR) considerations for Azure Virtual Desktop - <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/wvd/eslz-business-continuity-and-disaster-recovery>
+    - You can reduce the time required to back up, restore, and replicate data by:
+      - Separating the user profile and office container disks. FSLogix offers the option to place disks in separate storage locations.
+      - In normal usage, the office disk can consume many more gigabytes than the profile disk and the office disk isn't required to be resilient. It's a cache of data and can be downloaded again from Microsoft 365 online services.
+      - OneDrive can be used to redirect well-known folders (Desktop, Documents, Pictures, Screenshots, and Camera Roll) if present. This redirection enables the resilience of this data without needing special consideration in a BCDR scenario.
+      - Backup, replication, and restore of the profile disk is quicker without the inclusion of the cache data.
+      - FSLogix containers can be replicated with Native Azure Storage replication mechanisms, cross-region replication of Azure NetApp Files, or Azure File Sync for VM-based file servers. FSLogix cloud cache built-in mechanism.
+      - Consider, Golden image cross region availability
+      - You can use the Azure Backup service to protect profile and office container data when stored in either Azure Files Standard tier or Premium tier.
+      - You can use Azure NetApp Files snapshots and policies for Azure NetApp Files on all tiers.
+      - You can use Azure Backup to protect host pool VMs. This practice is supported even if host pool VMs are stateless.
+  - Set up a business continuity and disaster recovery plan - https://docs.microsoft.com/en-us/azure/virtual-desktop/disaster-recovery
+  AVD has BCDR to preserve metadata during outages. When an outage occurs in a region, the service infrastructure components will fail over to the secondary location.
+    - Replicate the VMs in a secondary location. (both pooled and personal with ASR + VNET + one hostpool)
+    - If you're using profile containers, set up data replication in the secondary location. (The FSLogix agent can support multiple profile locations if you configure the registry entries for FSLogix. If you need synchronous replication to minimize data loss, then we recommend you use FSLogix Cloud Cache instead.)
+    - Make sure user identities you set up in the primary location are available in the secondary location.
+    - Make sure any line-of-business applications relying on data in your primary location are failed over to the secondary location.
+    - Recommend you only failover up to 100 VMs at a time. If you have more VMs than that, we recommend you fail them over in batches 10 minutes apart.
 - design a backup strategy for Azure Virtual Desktop
+  - Summarized here: <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/wvd/eslz-business-continuity-and-disaster-recovery#design-recommendations>
 - configure backup and restore for FSLogix user profiles, personal virtual desktop infrastructures (VDIs), and golden images
+  - Summarized here: <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/wvd/eslz-business-continuity-and-disaster-recovery#design-recommendations>
 
 #### Automate Azure Virtual Desktop management tasks
 
 - configure automation for Azure Virtual Desktop
-- automate management of host pools, session hosts, and user sessions by using 
-
-#### PowerShell and Azure Command-Line Interface (CLI) 
-
+- automate management of host pools, session hosts, and user sessions by using PowerShell and Azure Command-Line Interface (CLI)
 - implement autoscaling in host pools
+  - Scale session hosts using Azure Automation - <https://docs.microsoft.com/en-us/azure/virtual-desktop/set-up-scaling-script>
+    - Shutting down and deallocating session host VMs during off-peak usage hours, then turning them back on and reallocating them during peak hours. Scaling tool built with the Azure Automation account and Azure Logic App that automatically scales session host VMs. Combination of an Azure Automation account, a PowerShell runbook, a webhook, and the Azure Logic App to function. When the tool runs, Azure Logic App calls a webhook to start the Azure Automation runbook. The runbook then creates a job. For off peek time, the job will set the session host VMs to drain mode to prevent new sessions from connecting to the hosts. The job will then notify any currently signed in users to save their work, wait the configured amount of time, and then force the users to sign out.
+      - Schedule VMs to start and stop based on Peak and Off-Peak business hours.
+      - Scale out VMs based on number of sessions per CPU core.
+      - Scale in VMs during Off-Peak hours, leaving the minimum number of session host VMs running.
+  - Shut Down Unused Session Hosts in an Azure Virtual Desktop (WVD, AVD) Personal and Pooled Host Pool - <https://youtu.be/0PWO3OaZmeQ>
+    - Supports Autostart, requires GPO disconnect idle sessions, logout disconnected sessions
 
 #### Monitor and manage performance and health
 

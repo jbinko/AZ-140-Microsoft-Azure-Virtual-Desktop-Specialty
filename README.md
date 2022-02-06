@@ -302,33 +302,49 @@ Candidates for this certification should have experience in Azure technologies, 
 
 #### Manage security
 
-
-
-
-
-
-
-
 - plan and implement Conditional Access policies for connections to Azure Virtual Desktop
+  - Create a Conditional Access policy - <https://docs.microsoft.com/en-us/azure/virtual-desktop/set-up-mfa#create-a-conditional-access-policy>
+  (New Policy, User/Groups assignments, Azure Virtual Desktop (App ID 9cdead84-a844-4324-93f2-b2e6bb768d07), Mobile/Desktop Client, Condition, Require MFA, Sign in freq (hours))
+  - AVD Identity Security | Azure Virtual Desktop - #11- <https://youtu.be/31DQ8JuLQes>
 - plan and implement multifactor authentication in Azure Virtual Desktop
+  - Enable Azure multifactor authentication for Azure Virtual Desktop - <https://docs.microsoft.com/en-us/azure/virtual-desktop/set-up-mfa>
 - manage security by using Azure Security Center
+  - AVD Security best practices - <https://docs.microsoft.com/en-us/azure/virtual-desktop/security-guide>
+  - Protecting Windows Virtual Desktop environments with Azure Security Center - <https://azure.microsoft.com/de-de/blog/protecting-windows-virtual-desktop-environments-with-azure-security-center>
 - configure Microsoft Defender Antivirus for session hosts
+  - Deployment guide for Microsoft Defender Antivirus in a virtual desktop infrastructure (VDI) environment - <https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/deployment-vdi-microsoft-defender-antivirus?view=o365-worldwide>
 
 ### Manage User Environments and Apps (20-25%)
 
 #### Implement and manage FSLogix
 
 - plan for FSLogix
+  - Implement and manage FSLogix - <https://docs.microsoft.com/en-us/learn/modules/implement-manage-fslogix/>
+  - FSLogix for the enterprise - <https://docs.microsoft.com/en-us/azure/architecture/example-scenario/wvd/windows-virtual-desktop-fslogix>
+  - A Practical Guide to FSLogix Containers Capacity Planning and Maintenance - <https://stealthpuppy.com/fslogix-containers-capacity/>
+  - The SECRET to FSLogix - <https://youtu.be/ffZZGVTYHFk>
   - Always separate Profile and Office Container
   - You can benefit from having different performance characteristics for storage for Profiles and Office Containers
+  - Shrinks FSLogix Profile and O365 dynamically - Invoke-FslShrinkDisk.ps1 -Path \\server\share -Recurse -PassThru - <https://github.com/FSLogix/Invoke-FslShrinkDisk>
 - install and configure FSLogix
+  - Install FSLogix - <https://docs.microsoft.com/en-us/fslogix/install-ht>
 - configure Profile Containers
+  - Configure Profile Container - <https://docs.microsoft.com/en-us/fslogix/configure-profile-container-tutorial>
 - configure Cloud Cache
+  - Configure Cloud Cache - <https://docs.microsoft.com/en-us/fslogix/configure-cloud-cache-tutorial>
 - migrate user profiles to FSLogix
+  - Migrate existing user profiles to FSLogix Profile Containers - <https://www.christiaanbrinkhoff.com/2020/02/14/youtube-how-to-migrate-from-upd-to-fslogix-profile-container-profiles-to-windows-virtual-desktop/>
+    - Convert-UPDProfile -ProfilePath “C:\Users\UserDisk1.vhd” -Target “\\Server\FSLogixProfiles$” -MaxVHDSize 20 -VHDLogicalSectorSize 512 -VHD -IncludeRobocopyDetails -LogPath C:\temp\Log.txt`
+    - Convert-RoamingProfile -ParentPath <String> -Target <String> -VHDMaxSizeGB <UInt64> -VHDLogicalSectorSize <String> [-VHD][-IncludeRobocopyDetail] [-LogPath <String>] [-WhatIf] [-Confirm] [<CommonParameters>]`
+
+
+
+
 
 #### Configure user experience settings
 
 - configure Universal Print
+  - Introduction To Microsoft Universal Print - <https://youtu.be/ZtM_fEg6-Jg>
 - configure user settings through group policies and Endpoint Manager policies
 - configure persistent and non-persistent desktop environments
 - configure Remote Desktop Protocol (RDP) properties on a host pool
@@ -463,219 +479,5 @@ Candidates for this certification should have experience in Azure technologies, 
 - AZ-140 ep19 - <https://youtu.be/Val6RL60YjE>
   - Windows Virtual Desktop click -> Click Insights -> Has data, Dashboard, Alerts, uses log analytics workspace
   - Configure Diag Settings on host pool, workspace, session hosts to store to LA add also VM performance counters, configure events button
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-If you're an eligible Microsoft Remote Desktop Services (RDS) Client Access License (CAL) customer, Windows Server Remote Desktop Services desktops and apps are available at no additional cost.
-
-Azure Virtual Desktop doesn't support x86 (32-bit), Windows 10 Enterprise N, or Windows 10 Enterprise KN operating system images. 
-Azure Virtual Desktop isn't suited for offline scenarios.
-
-Password Hash Sync – usernames and hashes of passwords are synchronized to Azure AD
-Pass-through Authentication – your on-premises directory service can perform simple authentication for Microsoft cloud services, requiring little on-premises configuration on your domain controllers
-Active Directory Federation Services – more complex partner federation, RSA tokens, and Smartcard authentication. If you use this option, you'll need to provision additional on-premises servers and ensure they are highly available.
-
-
-https://docs.microsoft.com/en-us/learn/modules/m365-prepare-for-wvd/4-provision-roles
-TABLE 1
-Address	Outbound TCP port	Purpose	Service Tag
-*.wvd.microsoft.com	443	Service traffic	WindowsVirtualDesktop
-mrsglobalsteus2prod.blob.core.windows.net	443	Agent and SXS stack updates	AzureCloud
-*.core.windows.net	443	Agent traffic	AzureCloud
-*.servicebus.windows.net	443	Agent traffic	AzureCloud
-prod.warmpath.msftcloudes.com	443	Agent traffic	AzureCloud
-catalogartifact.azureedge.net	443	Azure Marketplace	AzureCloud
-kms.core.windows.net	1688	Windows activation	Internet
-wvdportalstorageblob.blob.core.windows.net	443	Azure portal support	AzureCloud
-
-blob storage, You can also use Azure NetApp Files or Storage Spaces Direct.
-
-Typically, none of those users would be a local administrator on the pooled VM
-Windows 10 Enterprise multi-session. This OS is exclusive to Azure Virtual Desktop.
-personal - users would typically be a local administrator for the VM.
-
-When you create an Azure Virtual Desktop host pool, you can choose to create new VMs or register existing VMs to a host pool.
-
-You can create up to 159 VMs when you first create your host pool. Each deployment creates four objects per VM, that can be seen in your resource group plus some additional Azure Resource Manager objects. So you can quickly reach the 800 Azure resources per deployment limit. You can add more VMs after you finish creating your host pool. Check the Azure VM and API limits for your resource group and subscription.
-
-For single-session scenarios, we recommend at least two physical CPU cores per VM. 
-VM sizing for single-session VMs likely align with physical device guidelines.
-
-Pokud nemam image v gallery, pak ji muzu mit i v blob storage pak ale
-Image URI - Enter the URL to the generalized VHD from your Azure Storage account.
-Use managed disks - For Storage blob image type, we recommend you choose Yes for most VM configurations. You'd choose No where you want to use unmanaged disks for classic scenarios or to manage VHDs in your storage account.
-Storage account - You select the Azure storage account that contains your image.
-
-
-Bypass subscribe to workspace step
-https://docs.microsoft.com/en-us/learn/modules/m365-deploy-wvd/2-deployment-overview
-To bypass that step and simplify the process for your users, set up email discovery with your domain registrar. Add a DNS TXT record that has the following properties for the domain associated with your email:
-BYPASS SUBSCRIBE TO WORKSPACE STEP
-Property	Value
-Host	_msradc
-Text	https://rdweb.wvd.microsoft.com/api/arm/feeddiscovery/webfeeddiscovery.aspx
-TTL	300
-
-https://docs.microsoft.com/en-us/learn/modules/m365-optimize-wvd/2-fslogix-overview
-To provide the best experience for your Azure Virtual Desktop users, use FSLogix profiles. FSLogix is designed to roam profiles in remote computing environments, such as Azure Virtual Desktop. It stores a complete user profile in a single container. At sign-in, this container is dynamically attached to the computing environment using natively supported Virtual Hard Disk (VHD) and Hyper-V Virtual Hard disk (VHDX). The user profile is immediately available and appears in the system exactly like a native user profile.
-
-With FSLogix solutions you can:
-Maintain user context in non-persistent environments
-Minimize sign in times for non-persistent environments
-Optimize file IO between host/client and remote profile store
-Provide users a local profile experience, which can eliminate many compatibility issues with solutions using visible redirection
-Simplify the management of applications and images
-Specify the version of Java to be used by specific URL and applications
-
-In an Azure Virtual Desktop environment, we recommend FSLogix profile containers for storing the whole user profile.
-We strongly recommend using Azure Files instead of file shares.
-Use FSLogix profiles to:
-Separate user profiles from virtual machines
-Persist these profiles as user-assigned virtual disks in Azure storage, Azure NetApp Files, or Storage Spaces Direct
-Dynamically attach them to a user
-
- to enable authentication for Azure file shares with Azure AD DS. If you're using AD DS on premises, you need to register your Azure storage account with AD DS, and then set the required domain properties on the storage account. Use the AzFilesHybrid Azure PowerShell module on a device that is domain joined to your on-premises AD DS. The Join-AzStorageAccountForAuth cmdlet performs the equivalent of an offline domain join on behalf of the Azure storage account.
-
- Secure your Azure Virtual Desktop data by using Azure Disk Encryption
- Enable Azure Security Center, MFA, Cond Access, Collect Audit Logs, Azure Monitor, Endpoint Protection, 
- Establish maximum inactive time and disconnection policies, Lock setup screen for idle sessions
- Don't grant your users administrator access to virtual desktops
- Restrict operating system capabilities
- In the Azure Virtual Desktop host pools, limit device redirection under RDP properties
-
- To deploy Microsoft Defender for Endpoint on your Azure Virtual Desktop VMs, enroll the VMs into Azure Security Center. Security Center provides a license as part of its standard offering.
- You should also use automatic provisioning. The settings for automatic provisioning in Security Center have a toggle for each type of supported extension. 
- Enable automatic provisioning of the Log Analytics agent. When automatic provisioning is turned on for the Log Analytics agent, Security Center deploys the agent on all supported Azure VMs and any new ones that are created.
-
- Windows Defender Application Control and AppLocker.
- Windows 10 introduced Windows Defender Application Control. Organizations can use this feature to control the drivers and applications that can run on their Windows 10 clients
-
- We recommend using AppLocker as part of your overall application control strategy. It allows predefined applications to run on your systems.
-AppLocker control policies restriction rules are based on:
-File attributes such as the digital signature
-Product name
-File name
-File version
-
-HowTo
- https://docs.microsoft.com/en-us/learn/modules/m365-optimize-wvd/3-provision-fslogix
-
-Migrate files from local file shares into Azure storage by using Azure File Sync
-https://docs.microsoft.com/en-us/learn/modules/m365-optimize-wvd/4-migrate-files
-
-Scale session hosts using Azure Automation
-https://docs.microsoft.com/en-us/learn/modules/m365-optimize-wvd/5-configure-automation
-
-
-Secure network access
-https://docs.microsoft.com/en-us/learn/modules/m365-wvd-security/6-secure-network-access
-Azure Virtual Desktop uses Remote Desktop Protocol (RDP) to provide remote display and input capabilities over network connections. The connection data flow for Azure Virtual Desktop starts with a DNS lookup for the closest Azure datacenter.
-When authenticated in Azure Active Directory, a token is returned to the Remote Desktop Services client.
-The gateway checks the token with the connection broker.
-The broker queries the Azure SQL database for resources assigned to the user.
-The gateway and the broker select the session host for the connected client.
-The session host creates a reverse connection to the client by using the Azure Virtual Desktop gateway.
-No inbound ports are opened. In this version, the gateway is acting as an intelligent reverse proxy. 
-
-
-https://docs.microsoft.com/en-us/learn/modules/m365-wvd-application-management/2-what-is-msix
-MSIX app attach is an application delivery technology that separates applications and their state from the operating system and assigns applications to users dynamically.
-MSIX app attach, to separate applications from primary images. 
-You can prepare your application in MSIX package format, which uses container technology to improve the fidelity of application installation and uninstallation. All MSIX apps write to their own registry and application data folder, and they can read the global registry through the operating system.
-you can use one application format (MSIX) to deliver applications to both physical and virtual machines.
-MSIX app attach stores application files in a separate virtual hard disk from the operating system. It registers the regular MSIX package on a device instead of on a physical download and installation.
-The benefits of MSIX include:
-- Predictable and secure deployment. MSIX apps use container technology that isolates the app from the rest of the operating system for security.
-- Clean removal. When you remove MSIX apps, you remove all application data. There is no remaining data in the registry or in the file system of the operating system.
-- Single-instance storage. MSIX app attach uses one instance of the MSIX application to deliver to all hosts without consuming extra space.
-- Resistance to tampering. After an MSIX package has been expanded into an MSIX image, the latter is read-only and locked down for modification by the operating system.
-
-Applications packaged in MSIX format are installed in the c:\Program Files\WindowsApps folder. Each package folder contains these standardized files:
-
-WHAT'S INSIDE AN MSIX PACKAGE?
-File	Description
-App payload	Contains the app code files and assets.
-AppxBlockMap.xml	Contains a verified and secure list of all the files within the package.
-AppxManifest.xml	Drives the installation by configuring association with files, and contains the identity of the package and their dependencies.
-AppxSignature.p7x	Contains the signature of the package that the operating system must trust before the app is installed.
- Tip
-
-To extract the contents of the MSIX package, change the .msix file extension to .zip, and then extract the files by using File Explorer.
-
-You can create an MSIX package by using one of two methods:
-Repackaging existing Win32 installers
-Generating MSIX from source code
-
-You can use either an interactive UI or a command line to convert an existing package to MSIX package format. It's important that prior to running the MSIX Packaging Tool, you:
-Use a supported Windows 10 version, minimum 1809.
-Work from a clean computer, without additional services and applications running on it.
-Prepare the environment for conversion, ensuring that it's similar to the one that will host the newly created MSIX package.
-Ensure that the architecture on the computer used for conversion is the same as the computer that will deploy the application.
-Use a virtual machine with checkpoints, so you can easily test and revert the changes for every modification of the package.
-Understand the dependencies of the applications to properly prepare the MSIX package.
-
-When you run the MSIX Packaging Tool on the clean computer, you'll be prompted to choose one of the following three options:
-
-Application package. Use this option to create an MSIX package either from existing installers or through manual installation of the application payload.
-Modification package. Use this option to modify existing MSIX packages. This option might require you to go through the initial packaging steps.
-Package editor. Use this option to make changes to the existing package without running the installers again. For example, you can edit the manifest of the package.
-
-
-In the MSIX Packaging Tool, use the following steps to repackage an application to MSIX:
-
-The MSIX Packaging Tool prepares the computer. In this step, the MSIX package driver is installed and Windows Update is disabled.
-
-Choose the installer that you want to package. This step varies based on the installers that you choose to convert. The last part of this step is to sign the package by using one of the following options:
-
-Sign with Device Guard signing.
-Sign with a certificate (.pfx).
-Specify a .cer file. This option doesn't sign the package but matches the subject of the certificate that will be used for signing.
-Detail the package information. The MSIX Packaging Tool tries to autofill information about the app based on the installer that's used. You can customize the input with your own values as needed.
-
-Run the installation. The tool starts to monitor the installation phase and capture all installation options. If the installer requires a restart, you can restart the computer and continue the process of conversion.
-
-Manage the tasks that determine the user experience the first time you run the tool.
-
-Review the services report. This step is used for installers that register services on the computers. Supported services are listed in the Included table. Services that aren't supported appear in the Excluded table.
-
-Create a package. This is the final phase of the process, where you provide a location to save the MSIX package.
-
- MsixPackagingTool.exe create-package --template c:\users\documents\ConversionTemplate.xml -v
-
-
-After you open MSIX app attach, you experience the following process:
-
-From the Azure Virtual Desktop client, you sign in and select the host pool for which you have access. The process is similar to opening published RemoteApp programs from the Azure Virtual Desktop environment.
-You're assigned a virtual machine within the host pool, on which a RemoteApp or Remote Desktop session is created. The Azure Virtual Desktop client interacts with that session.
-If the user profile is configured, the FSLogix agent on the session host provides the user profile from the file share. The file share can be Azure Files, Azure NetApp Files, or an infrastructure as a service (IaaS) file server.
-Applications that are assigned to you are read from Azure Virtual Desktop.
-MSIX app attach applications are registered to the virtual machine for you, from the attached MSIX virtual disk. That virtual disk might be on an IaaS file share, Azure Files, or Azure NetApp Files.
-
-Manage create app attach
-https://docs.microsoft.com/en-us/learn/modules/m365-wvd-application-management/4-manage-msix-app-attach
-
-
-
-
 
 
